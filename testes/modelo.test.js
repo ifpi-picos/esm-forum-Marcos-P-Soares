@@ -33,7 +33,6 @@ test('Testando cadastro de perguntas e respostas', () => {
   expect(perguntas[0].texto).toBe('Qual a capital da França?');
   expect(perguntas[1].texto).toBe('O que é 2 + 2?');
 
-  // Cadastrando respostas para as perguntas
   const idPergunta1 = perguntas[0].id_pergunta;
   const idPergunta2 = perguntas[1].id_pergunta;
 
@@ -41,7 +40,6 @@ test('Testando cadastro de perguntas e respostas', () => {
   modelo.cadastrar_resposta(idPergunta1, 'Londres');
   modelo.cadastrar_resposta(idPergunta2, '4');
 
-  // Verificando número de respostas
   expect(modelo.get_num_respostas(idPergunta1)).toBe(2);
   expect(modelo.get_num_respostas(idPergunta2)).toBe(1);
 });
@@ -58,13 +56,10 @@ test('Testando recuperação de perguntas e respostas', () => {
   modelo.cadastrar_resposta(idPergunta1, 'Cinza');
   modelo.cadastrar_resposta(idPergunta2, 'Júpiter');
 
-  // Testando recuperação da pergunta
   const perguntaRecuperada = modelo.get_pergunta(idPergunta1);
-  console.log("get_pergunta retornou:", perguntaRecuperada);
   expect(perguntaRecuperada).toBeDefined(); 
   expect(perguntaRecuperada.texto).toBe('Qual é a cor do céu?');
 
-  // Testando recuperação de respostas
   const respostasPergunta1 = modelo.get_respostas(idPergunta1);
   const respostasPergunta2 = modelo.get_respostas(idPergunta2);
 
