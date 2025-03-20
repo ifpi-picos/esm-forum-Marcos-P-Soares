@@ -23,3 +23,55 @@ test('Testando cadastro de três perguntas', () => {
   expect(perguntas[2].num_respostas).toBe(0);
   expect(perguntas[1].id_pergunta).toBe(perguntas[2].id_pergunta-1);
 });
+
+test('Testando cadastro de perguntas e respostas', () => {
+  modelo.cadastrar_pergunta('Qual a capital da França?');
+  modelo.cadastrar_pergunta('O que é 2 + 2?');
+
+  const perguntas = modelo.listar_perguntas();
+  expect(perguntas.length).toBe(2);
+  expect(perguntas[0].texto).toBe('Qual a capital da França?');
+  expect(perguntas[1].texto).toBe('O que é 2 + 2?');
+
+  // Cadastrando respostas para as perguntas
+  const idPergunta1 = perguntas[0].id_pergunta;
+  const idPergunta2 = perguntas[1].id_pergunta;
+
+  modelo.cadastrar_resposta(idPergunta1, 'Paris');
+  modelo.cadastrar_resposta(idPergunta1, 'Londres');
+  modelo.cadastrar_resposta(idPergunta2, '4');
+
+  // Verificando número de respostas
+  expect(modelo.get_num_respostas(idPergunta1)).toBe(2);
+  expect(modelo.get_num_respostas(idPergunta2)).toBe(1);
+});
+
+test('Testando recuperação de perguntas e respostas', () => {
+  modelo.cadastrar_pergunta('Qual é a cor do céu?');
+  modelo.cadastrar_pergunta('Qual o maior planeta do sistema solar?');
+
+  const perguntas = modelo.listar_perguntas();
+  const idPergunta1 = perguntas[0].id_pergunta;
+  const idPergunta2 = perguntas[1].id_pergunta;
+
+  modelo.cadastrar_resposta(idPergunta1, 'Azul');
+  modelo.cadastrar_resposta(idPergunta1, 'Cinza');
+  modelo.cadastrar_resposta(idPergunta2, 'Júpiter');
+
+  // Testando recuperação da pergunta
+  const perguntaRecuperada = modelo.get_pergunta(idPergunta1);
+  console.log("get_pergunta retornou:", perguntaRecuperada);
+  expect(perguntaRecuperada).toBeDefined(); 
+  expect(perguntaRecuperada.texto).toBe('Qual é a cor do céu?');
+
+  // Testando recuperação de respostas
+  const respostasPergunta1 = modelo.get_respostas(idPergunta1);
+  const respostasPergunta2 = modelo.get_respostas(idPergunta2);
+
+  expect(respostasPergunta1.length).toBe(2);
+  expect(respostasPergunta1[0].texto).toBe('Azul');
+  expect(respostasPergunta1[1].texto).toBe('Cinza');
+
+  expect(respostasPergunta2.length).toBe(1);
+  expect(respostasPergunta2[0].texto).toBe('Júpiter');
+});
